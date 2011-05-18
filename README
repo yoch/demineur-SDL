@@ -1,2 +1,7 @@
 Demineur SDL
 version 0.3
+
+
+compiler avec :
+gcc -W -Wall -Wextra -O2 -s -o demineur-SDL *.c -lSDL
+
