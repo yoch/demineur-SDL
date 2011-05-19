@@ -248,7 +248,6 @@ int main ( int argc, char** argv )
         if (draw && !boom)  /* le jeu continue */
         {
             Display();
-            draw = 0;
         }
         else if (boom || nbMines == 0)  /* fin du jeu */
         {
@@ -266,6 +265,7 @@ int main ( int argc, char** argv )
             SDL_WM_SetCaption(title, NULL);
             SDL_RemoveTimer(timer);
         }
+        draw = 0;
 
         SDL_WaitEvent(&event);
         switch (event.type)
