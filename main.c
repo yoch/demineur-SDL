@@ -35,7 +35,7 @@ Uint32 timer_callback (Uint32 intervalle, void *param)
     event.user.code = UPDATE_TITLE_EVENT;
     event.user.data1 = NULL;
     event.user.data2 = NULL;
-    
+
    (*elapsed)++;
     SDL_PushEvent(&event);
 
@@ -183,7 +183,8 @@ void Game_end (void)
 
 int main ( int argc, char** argv )
 {
-    unsigned done = 0, boom = 0, elapsed = 0;
+    unsigned done = 0, boom = 0, draw = 1;
+    unsigned elapsed = 0;
     int mouseX, mouseY;
     SDL_Event event;
     SDL_TimerID timer;
@@ -244,11 +245,12 @@ int main ( int argc, char** argv )
 
     while (!done)
     {
-        if (!boom && nbMines > 0)  /* le jeu continue */
+        if (draw && !boom)  /* le jeu continue */
         {
             Display();
+            draw = 0;
         }
-        else  /* fin du jeu */
+        else if (boom || nbMines == 0)  /* fin du jeu */
         {
             DisplayEnd();
             if (boom)
@@ -278,16 +280,18 @@ int main ( int argc, char** argv )
             {
             case SDL_BUTTON_LEFT:
                 if (!boom)
-                { 
+                {
                     boom = traitement_clic_gauche (mouseX/BOX_W, mouseY/BOX_H);
                     if ( !boom && DoubleClickDetected() )
                         boom = traitement_double_clic(mouseX/BOX_W, mouseY/BOX_H);
+                    draw = 1;
                 }
                 break;
             case SDL_BUTTON_RIGHT:
                 if (!boom)
                 {
                     traitement_clic_droit (mouseX/BOX_W, mouseY/BOX_H);
+                    draw = 1;
                 }
                 break;
             default:
@@ -314,7 +318,7 @@ int main ( int argc, char** argv )
                 UpdateTitle (elapsed);
             }
             break;
-            
+
         default:
             break;
 
